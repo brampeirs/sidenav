@@ -1,6 +1,6 @@
 <ul sidenav [collapsed]="false">
   <sidenav-divider />
-  <sidenav-header title="content" />
+  <sidenav-header title="header title 1" />
 
   <li sidenav-item icon="settings">
     <a [routerLink]="['/home']">Home</a>
@@ -10,15 +10,25 @@
   </li>
 
   <sidenav-divider />
-  <sidenav-header title="distribution" />
+  <sidenav-header title="header title 2" />
 
-  <li sidenav-menu title="Download" icon="appstore">
+  <li sidenav-menu title="Menu 1" icon="appstore">
     <ul>
       <li sidenav-item>
         <a [routerLink]="['/ios']">ios</a>
       </li>
       <li sidenav-item>
         <a [routerLink]="['/android']">android</a>
+      </li>
+    </ul>
+  </li>
+  <li sidenav-menu title="Menu 2" icon="appstore">
+    <ul>
+      <li sidenav-item>
+        <a [routerLink]="['/sub']">sub A</a>
+      </li>
+      <li sidenav-item>
+        <a [routerLink]="['/sub-two']">sub B</a>
       </li>
     </ul>
   </li>

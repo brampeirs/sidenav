@@ -26,4 +26,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./ios/ios.component').then((c) => c.IosComponent),
   },
+  {
+    path: 'sub',
+    loadComponent: () =>
+      import('./sub/sub.component').then((c) => c.SubComponent),
+  },
+  {
+    path: 'sub-two',
+    loadComponent: () =>
+      import('./sub-two/sub-two.component').then((c) => c.SubTwoComponent),
+  },
 ];
