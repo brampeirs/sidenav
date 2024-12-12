@@ -51,19 +51,15 @@ export class SidenavItemComponent {
   }
 
   private updateRouterActive(): void {
-    if (!this.routerLinkContentChild() || !this.router.navigated) {
+    const routerLink = this.routerLinkContentChild();
+    if (!routerLink || !this.router.navigated) {
       return;
     }
 
-    const isLinkActive = this.isLinkActive();
+    const isLinkActive = this.isRouterLinkActive(routerLink);
     if (this.itemSelected()() !== isLinkActive) {
       this.itemSelected().set(isLinkActive);
     }
-  }
-
-  private isLinkActive(): boolean {
-    const routerLink = this.routerLinkContentChild();
-    return routerLink ? this.isRouterLinkActive(routerLink) : false;
   }
 
   private isRouterLinkActive(link: RouterLink): boolean {
