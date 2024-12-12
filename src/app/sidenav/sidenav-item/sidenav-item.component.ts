@@ -16,6 +16,7 @@ import {
   RouterModule,
 } from '@angular/router';
 import { filter } from 'rxjs';
+import { SidenavMenuService } from '../sidenav-menu/sidenav-menu.service';
 
 @Component({
   selector: '[sidenav-item]',
@@ -36,6 +37,7 @@ export class SidenavItemComponent {
 
   private router = inject(Router);
   routerLinkContentChild = contentChild(RouterLink, { descendants: true });
+  sideNavMenuService = inject(SidenavMenuService, { optional: true });
 
   // active link logic inspired by ngZorro
   // https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/menu/menu-item.component.ts#L118
@@ -59,6 +61,12 @@ export class SidenavItemComponent {
     const isLinkActive = this.isRouterLinkActive(routerLink);
     if (this.itemSelected()() !== isLinkActive) {
       this.itemSelected().set(isLinkActive);
+      if (this.sideNavMenuService && routerLink.urlTree) {
+        this.sideNavMenuService.setSideNavItemSelection(
+          routerLink.urlTree.toString(),
+          isLinkActive
+        );
+      }
     }
   }
 
