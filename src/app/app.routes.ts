@@ -16,4 +16,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./about/about.component').then((c) => c.AboutComponent),
   },
+  {
+    path: 'android',
+    loadComponent: () =>
+      import('./android/android.component').then((c) => c.AndroidComponent),
+  },
+  {
+    path: 'ios',
+    loadComponent: () =>
+      import('./ios/ios.component').then((c) => c.IosComponent),
+  },
 ];

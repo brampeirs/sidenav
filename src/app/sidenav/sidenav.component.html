@@ -1,4 +1,25 @@
-<ul>
-  <li><a routerLink="/home">Home</a></li>
-  <li><a routerLink="/about">About</a></li>
+<ul sidenav [collapsed]="false">
+  <sidenav-divider />
+  <sidenav-header title="content" />
+
+  <li sidenav-item icon="settings">
+    <a [routerLink]="['/']">Home</a>
+  </li>
+  <li sidenav-item icon="profile">
+    <a [routerLink]="['/about']">About</a>
+  </li>
+
+  <sidenav-divider />
+  <sidenav-header title="distribution" />
+
+  <li sidenav-menu title="Download" icon="appstore">
+    <ul>
+      <li sidenav-item>
+        <a [routerLink]="['/ios']">ios</a>
+      </li>
+      <li sidenav-item>
+        <a [routerLink]="['/android']">android</a>
+      </li>
+    </ul>
+  </li>
 </ul>
