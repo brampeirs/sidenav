@@ -14,6 +14,7 @@ import {
   Router,
   RouterLink,
   RouterModule,
+  UrlTree,
 } from '@angular/router';
 import { filter } from 'rxjs';
 import { SidenavMenuService } from '../sidenav-menu/sidenav-menu.service';
@@ -25,15 +26,13 @@ import { SidenavMenuService } from '../sidenav-menu/sidenav-menu.service';
   templateUrl: './sidenav-item.component.html',
   styleUrl: './sidenav-item.component.scss',
   host: {
-    '[class.sidenav-item-selected]': 'itemSelected()()',
+    '[class.sidenav-item-selected]': 'selected()',
   },
 })
 export class SidenavItemComponent {
   icon = input<string>();
-  selected = input(false, { transform: booleanAttribute });
-  matchRouterExact = input(false, { transform: booleanAttribute });
 
-  protected itemSelected = computed(() => signal(this.selected()));
+  protected selected = signal(false);
 
   private router = inject(Router);
   routerLinkContentChild = contentChild(RouterLink, { descendants: true });
@@ -47,33 +46,36 @@ export class SidenavItemComponent {
         takeUntilDestroyed(),
         filter((e) => e instanceof NavigationEnd)
       )
-      .subscribe((e) => {
-        this.updateRouterActive();
+      .subscribe(() => {
+        this.updateActiveState();
       });
   }
 
-  private updateRouterActive(): void {
+  private updateActiveState(): void {
     const routerLink = this.routerLinkContentChild();
-    if (!routerLink || !this.router.navigated) {
+    const urlTree = routerLink?.urlTree;
+
+    if (!urlTree || !this.router.navigated) {
       return;
     }
 
-    const isLinkActive = this.isRouterLinkActive(routerLink);
-    if (this.itemSelected()() !== isLinkActive) {
-      this.itemSelected().set(isLinkActive);
-      if (this.sideNavMenuService && routerLink.urlTree) {
-        this.sideNavMenuService.setSideNavItemSelection(
-          routerLink.urlTree.toString(),
-          isLinkActive
-        );
-      }
+    // update the item's selection state
+    const isLinkActive = this.isRouterLinkActive(urlTree);
+    this.selected.set(isLinkActive);
+
+    // if sidenav item lives in a sidenav menu, update the menu's selection state
+    if (this.sideNavMenuService) {
+      this.sideNavMenuService.setSideNavItemSelection(
+        routerLink.urlTree.toString(),
+        isLinkActive
+      );
     }
   }
 
-  private isRouterLinkActive(link: RouterLink): boolean {
-    return this.router.isActive(link.urlTree || '', {
-      paths: this.matchRouterExact() ? 'exact' : 'subset',
-      queryParams: this.matchRouterExact() ? 'exact' : 'subset',
+  private isRouterLinkActive(urlTree: UrlTree): boolean {
+    return this.router.isActive(urlTree, {
+      paths: 'subset',
+      queryParams: 'subset',
       fragment: 'ignored',
       matrixParams: 'ignored',
     });

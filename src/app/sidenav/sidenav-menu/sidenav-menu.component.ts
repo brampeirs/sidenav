@@ -1,10 +1,4 @@
-import {
-  Component,
-  contentChildren,
-  effect,
-  inject,
-  input,
-} from '@angular/core';
+import { Component, contentChildren, inject, input } from '@angular/core';
 import { SidenavItemComponent } from '../sidenav-item/sidenav-item.component';
 import { SidenavMenuService } from './sidenav-menu.service';
 
@@ -24,10 +18,4 @@ export class SidenavMenuComponent {
   });
 
   sideNavMenuService = inject(SidenavMenuService);
-
-  constructor() {
-    effect(() => {
-      console.log('children', this.sideNavMenuService.hasSideNavItemSelected());
-    });
-  }
 }
